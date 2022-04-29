@@ -1,5 +1,5 @@
 import { dbService } from "fbase";
-import { useState } from "react";
+import { useState, storageService } from "react";
 
 const Yeweet = ({ yeweetObj, isOwner }) => {
   const [editing, setEditing] = useState(false);
@@ -7,11 +7,10 @@ const Yeweet = ({ yeweetObj, isOwner }) => {
 
   const onDeleteClick = async () => {
     const ok = window.confirm("삭제하시겠습니까?");
-    console.log(ok);
     if (ok) {
-      console.log(yeweetObj.id);
-      const data = await dbService.doc(`yeweets/${yeweetObj.id}`).delete();
-      console.log(data);
+      await dbService.doc(`yeweets/${yeweetObj.id}`).delete();
+      if (yeweetObj.attachmentUrl !== "")
+        await storageService.refFromURL(yeweetObj.attachmentUrl).delete();
     }
   };
 
@@ -43,6 +42,10 @@ const Yeweet = ({ yeweetObj, isOwner }) => {
       ) : (
         <>
           <h4>{yeweetObj.text}</h4>
+          {yeweetObj.attachmentUrl && (
+            <img src={yeweetObj.attachmentUrl} width='50px' height='50px' />
+          )}
+
           {isOwner && (
             <>
               <button onClick={onDeleteClick}>Delete Yeweet</button>

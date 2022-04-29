@@ -7,11 +7,23 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(authService.currentUser);
   const [userObj, setUserObj] = useState(null);
 
+  const refreshUser = () => {
+    const user = authService.currentUser;
+    setUserObj({
+      uid: user.uid,
+      displayName: user.displayName,
+      updateProfile: (args) => user.updateProfile(args),
+    });
+  };
+
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
       if (user) {
-        setIsLoggedIn(user); /* 여기서 로그인 상태 isLoggedIn을 변경 */
-        setUserObj(user);
+        setUserObj({
+          uid: user.uid,
+          displayName: user.displayName,
+          updateProfile: (args) => user.updateProfile(args),
+        });
       } else {
         setIsLoggedIn(false);
       }
@@ -21,12 +33,16 @@ function App() {
   return (
     <>
       {init ? (
-        <AppRouter isLoggedIn={isLoggedIn} userObj={userObj} />
+        <AppRouter
+          refreshUser={refreshUser}
+          isLoggedIn={Boolean(userObj)}
+          userObj={userObj}
+        />
       ) : (
         "initializing..."
       )}
       {/* init상태검사 */}
-      <footer>&copy; {new Date().getFullYear()} Yewitter</footer>
+      {/*       <footer>&copy; {new Date().getFullYear()} Yewitter</footer> */}
       {/* 자바스크립트함수사용하려면 중괄호 잊지말기 여긴 JSX구역이니까! */}
       {/* 현재 연도를 반환해주는 자바스크립트 함수 */}
     </>
