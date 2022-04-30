@@ -1,6 +1,7 @@
-import { dbService } from "fbase";
-import { useState, storageService } from "react";
-
+import { dbService, storageService } from "fbase";
+import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 const Yeweet = ({ yeweetObj, isOwner }) => {
   const [editing, setEditing] = useState(false);
   const [newYeweet, setNewYeweet] = useState(yeweetObj.text);
@@ -30,14 +31,23 @@ const Yeweet = ({ yeweetObj, isOwner }) => {
   };
 
   return (
-    <div>
+    <div className='yeweet'>
       {editing ? (
         <>
-          <form onSubmit={onSubmit}>
-            <input onChange={onChange} value={newYeweet} required />
-            <input type='submit' value='Update Yeweet' />
+          <form onSubmit={onSubmit} className='container yeweetEdit'>
+            <input
+              onChange={onChange}
+              value={newYeweet}
+              required
+              placeholder='Edit your yeweet'
+              autoFocus
+              className='formInput'
+            />
+            <input type='submit' value='Update Yeweet' className='formBtn' />
           </form>
-          <button onClick={toggleEditing}>Cancel</button>
+          <button onClick={toggleEditing} className='formBtn cancelBtn'>
+            Cancel
+          </button>
         </>
       ) : (
         <>
@@ -47,10 +57,14 @@ const Yeweet = ({ yeweetObj, isOwner }) => {
           )}
 
           {isOwner && (
-            <>
-              <button onClick={onDeleteClick}>Delete Yeweet</button>
-              <button onClick={toggleEditing}>Edit Yeweet</button>
-            </>
+            <div className='yeweet__actions'>
+              <span onClick={onDeleteClick}>
+                <FontAwesomeIcon icon={faTrash} />
+              </span>
+              <span onClick={toggleEditing}>
+                <FontAwesomeIcon icon={faPencilAlt} />
+              </span>
+            </div>
           )}
         </>
       )}
