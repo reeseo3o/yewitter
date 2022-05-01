@@ -6,15 +6,6 @@ function App() {
   const [init, setInit] = useState(false);
   const [userObj, setUserObj] = useState(null);
 
-  const refreshUser = () => {
-    const user = authService.currentUser;
-    setUserObj({
-      uid: user.uid,
-      displayName: user.displayName,
-      updateProfile: (args) => user.updateProfile(args),
-    });
-  };
-
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
       if (user) {
@@ -29,6 +20,16 @@ function App() {
       setInit(true); /* init상태 변경 */
     });
   }, []);
+
+  const refreshUser = () => {
+    const user = authService.currentUser;
+    setUserObj({
+      uid: user.uid,
+      displayName: user.displayName,
+      updateProfile: (args) => user.updateProfile(args),
+    });
+  };
+
   return (
     <>
       {init ? (

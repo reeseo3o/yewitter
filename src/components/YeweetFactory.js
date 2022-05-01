@@ -15,6 +15,7 @@ const YeweetFactory = ({ userObj }) => {
     }
 
     let attachmentUrl = "";
+
     if (attachment !== "") {
       const attachmentRef = storageService
         .ref()
@@ -22,12 +23,16 @@ const YeweetFactory = ({ userObj }) => {
       const response = await attachmentRef.putString(attachment, "data_url");
       attachmentUrl = await response.ref.getDownloadURL();
     }
-    await dbService.collection("yeweets").add({
+
+    const yeweetObj = {
       text: yeweet,
       createdAt: Date.now(),
       creatorId: userObj.uid,
       attachmentUrl,
-    });
+    };
+
+    await dbService.collection("yeweets").add(yeweetObj);
+
     setYeweet("");
     setAttachment("");
   };
@@ -52,6 +57,7 @@ const YeweetFactory = ({ userObj }) => {
       } = finishedEvent;
       setAttachment(result);
     };
+
     if (Boolean(theFile)) {
       reader.readAsDataURL(theFile);
     }
@@ -71,7 +77,7 @@ const YeweetFactory = ({ userObj }) => {
             placeholder="What's on your mind?"
             maxLength={120}
           />
-          <input type='submit' value='Yeweet' className='factoryInput__arrow' />
+          <input type='submit' value='&rarr;' className='factoryInput__arrow' />
         </div>
         <label htmlFor='attach-file' className='factoryInput__label'>
           <span>Add Photos</span>

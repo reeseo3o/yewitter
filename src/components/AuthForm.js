@@ -1,6 +1,6 @@
 /* 로그인을 위한 폼 입니다. */
-import { authService, firebaseInstance } from "fbase";
-import React, { useState } from "react";
+import { authService } from "fbase";
+import { useState } from "react";
 
 const AuthForm = () => {
   const [email, setEmail] = useState("");
@@ -47,7 +47,7 @@ const AuthForm = () => {
       <form onSubmit={onSubmit} className='container'>
         <input
           name='email'
-          type='email'
+          type='text'
           placeholder='Email'
           required
           value={email}
@@ -66,7 +66,7 @@ const AuthForm = () => {
         <input
           type='submit'
           value={newAccount ? "Create Account" : "Log In"}
-          className='authInput'
+          className='authInput authSubmit'
         />
         {error && <span className='authError'>{error}</span>}
       </form>
