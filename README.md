@@ -1,4 +1,9 @@
 **Twitter Clone**
 
 **Skills**
-JavaScript | React | 
+
+**Frontend**
+JavaScript | React 
+
+**Backend**
+FireBase
